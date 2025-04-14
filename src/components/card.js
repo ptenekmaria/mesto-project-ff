@@ -1,5 +1,5 @@
 // Функция создания карточки
-function createCard (item, template, deleteFunc, likeFunc, imageClick, imgTypePopup, imgPopup, imgPopupCaption, fillingImgPopup, openPopup, closePopupIfEscClicked) {    
+function createCard (item, template, deleteFunc, likeFunc, imageClick) {    
     const card = template.querySelector('.card').cloneNode(true);
     const cardTitle = card.querySelector('.card__title');
     const cardImage = card.querySelector('.card__image');
@@ -11,7 +11,7 @@ function createCard (item, template, deleteFunc, likeFunc, imageClick, imgTypePo
     cardImage.alt = item.name;
     deleteButton.addEventListener('click', deleteFunc);
     likeButton.addEventListener('click', likeFunc);
-    cardImage.addEventListener('click', (evt) => imageClick(evt, imgTypePopup, imgPopup, imgPopupCaption, fillingImgPopup, openPopup, closePopupIfEscClicked));
+    cardImage.addEventListener('click', imageClick);
 
     return card;
 }

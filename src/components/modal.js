@@ -1,5 +1,5 @@
 //Функция открытия поп-ап
-function openPopup (popup, closePopupIfEscClicked) {
+function openPopup (popup) {
     popup.classList.add('popup_is-animated');
     popup.classList.add('popup_is-opened');
 
@@ -7,7 +7,7 @@ function openPopup (popup, closePopupIfEscClicked) {
 }
   
 //Функция закрытия поп-ап
-function closePopup (popup, closePopupIfEscClicked) {
+function closePopup (popup) {
     popup.classList.remove('popup_is-opened');
     popup.classList.remove('popup_is-animated'); 
 
@@ -24,7 +24,7 @@ function clearPopupForm (popup) {
 }
 
 //Функция закрытия поп-ап по клику на оверлей
-function closePopupIfOverlayClicked (evt, closePopup, closePopupIfEscClicked) {
+function closePopupIfOverlayClicked (evt) {
    const target = evt.target;
    const dialog = target.closest('.popup');
 
@@ -38,8 +38,7 @@ function closePopupIfEscClicked (evt) {
    if (evt.key === 'Escape') { 
     const openedPopup = document.querySelector('.popup_is-opened');
 
-    openedPopup.classList.remove('popup_is-opened');
-    openedPopup.classList.remove('popup_is-animated'); 
+    closePopup(openedPopup);
 
     document.removeEventListener('keydown', closePopupIfEscClicked);
    }

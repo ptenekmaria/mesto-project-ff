@@ -26,8 +26,8 @@ function fillingProfileEditPopup (profileName, profileDescription, profileEditNa
     profileEditDescription.value = profileDescription.textContent;
 }
 
-//Функция предзаполнения поп-ап изображения
-function fillingImgPopup (evt, imgPopup, imgPopupCaption) {
+// Функция открытия изображения
+function openImage (evt) {
     const img = evt.target;
     const card = img.closest('.card');
     const imgCaption = card.querySelector('.card__title');
@@ -35,12 +35,8 @@ function fillingImgPopup (evt, imgPopup, imgPopupCaption) {
     imgPopup.src = img.src;
     imgPopup.alt = img.alt;
     imgPopupCaption.textContent = imgCaption.textContent;
-}
 
-// Функция открытия изображения
-function imageClick (evt, imgTypePopup, imgPopup, imgPopupCaption, fillingImgPopup, openPopup, closePopupIfEscClicked) {
-    fillingImgPopup(evt, imgPopup, imgPopupCaption);
-    openPopup(imgTypePopup, closePopupIfEscClicked);
+    openPopup(imgTypePopup);
 }
 
 //Функция сохранения изменений в профиле
@@ -52,7 +48,7 @@ function submitProfileEdit (evt, profileName, profileDescription, profileEditNam
 }
 
 //Функция добавления новой карточки места
-function submitNewCard (evt, createCard, cardTemplate, itemForCards, deleteCard, likeCard, imageClick, imgTypePopup, imgPopup, imgPopupCaption, fillingImgPopup, openPopup, closePopupIfEscClicked) {
+function submitNewCard (evt) {
     evt.preventDefault();
     const newCardName = evt.target.querySelector('.popup__input_type_card-name');
     const newCardLink = evt.target.querySelector('.popup__input_type_url');
@@ -61,37 +57,35 @@ function submitNewCard (evt, createCard, cardTemplate, itemForCards, deleteCard,
         link: newCardLink.value
     }
     
-    const newCard = createCard(newCardItem, cardTemplate, deleteCard, likeCard, imageClick, imgTypePopup, imgPopup, imgPopupCaption, fillingImgPopup, openPopup, closePopupIfEscClicked);
+    const newCard = createCard(newCardItem, cardTemplate, deleteCard, likeCard, openImage);
     
-    itemForCards.prepend(newCard);
+    placesList.prepend(newCard);
 }
 
 //Вывод карточек на страницу
-const cards = initialCards.map(newCard => createCard(newCard, cardTemplate, deleteCard, likeCard, imageClick, imgTypePopup, imgPopup, imgPopupCaption, fillingImgPopup, openPopup, closePopupIfEscClicked));
+const cards = initialCards.map(newCard => createCard(newCard, cardTemplate, deleteCard, likeCard, openImage));
 cards.forEach(item => placesList.append(item));
 
 //Открытие диалога редактирования профиля
 profileEditButton.addEventListener('click', () => {
     fillingProfileEditPopup(profileName, profileDescription, profileEditName, profileEditDescription);
-    openPopup(profileEditPopup, closePopupIfEscClicked);
+    openPopup(profileEditPopup);
     });
 
 //Открытие диалога добавления карточки
 newCardButton.addEventListener('click', () => { 
-    openPopup(newCardPopup, closePopupIfEscClicked);
+    openPopup(newCardPopup);
 });
 
 //Закрытие поп-ап по кнопке
 popupCloseButtons.forEach(item => item.addEventListener('click', (evt) => {
     const popupToClose = evt.target.closest('.popup');
-    closePopup(popupToClose, closePopupIfEscClicked);
+    closePopup(popupToClose);
     clearPopupForm(popupToClose);
 }));
 
 //Закрытие поп-ап по оверлею
-popups.forEach(item => item.addEventListener('mousedown', (evt) => {
-    closePopupIfOverlayClicked(evt, closePopup, closePopupIfEscClicked);
-}));
+popups.forEach(item => item.addEventListener('mousedown', closePopupIfOverlayClicked));
 
 //Сохранение изменений в профиле
 profileEditPopup.addEventListener('submit', (evt) => {
@@ -102,7 +96,7 @@ profileEditPopup.addEventListener('submit', (evt) => {
 
 //Добавление новой карточки
 newCardPopup.addEventListener('submit', (evt) => {
-    submitNewCard(evt, createCard, cardTemplate, placesList, deleteCard, likeCard, imageClick, imgTypePopup, imgPopup, imgPopupCaption, fillingImgPopup, openPopup, closePopupIfEscClicked);
-    closePopup(newCardPopup, closePopupIfEscClicked);
+    submitNewCard(evt);
+    closePopup(newCardPopup);
     clearPopupForm(newCardPopup);
 });
