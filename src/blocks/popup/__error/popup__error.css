@@ -1,0 +1,16 @@
+.popup__error {
+  color: #FF0000;
+  font-size: 12px;
+  /* opacity: 0; */
+  transition: 0.3s;
+  position: absolute;
+  top: 48px;
+  left: 0;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.popup__error_visible {
+  opacity: 1;
+}

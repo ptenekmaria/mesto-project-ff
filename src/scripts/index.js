@@ -2,6 +2,7 @@ import '../pages/index.css';
 import { initialCards } from './cards.js';
 import { createCard, deleteCard, likeCard } from '../components/card.js';
 import { openPopup, closePopup, clearPopupForm, closePopupIfOverlayClicked, closePopupIfEscClicked } from '../components/modal.js';
+import { enableValidation } from '../scripts/validation.js';
 
 const placesList = document.querySelector('.places__list');
 const cardTemplate = document.querySelector('#card-template').content;
@@ -61,6 +62,16 @@ function submitNewCard (evt) {
     
     placesList.prepend(newCard);
 }
+
+//Включение валидации всех форм
+enableValidation({
+    formSelector: '.popup__form',
+    inputSelector: '.popup__input',
+    submitButtonSelector: '.popup__button',
+    inactiveButtonClass: 'popup__button_disabled',
+    inputErrorClass: 'popup__input_type_error',
+    errorClass: 'popup__error_visible'
+  });
 
 //Вывод карточек на страницу
 const cards = initialCards.map(newCard => createCard(newCard, cardTemplate, deleteCard, likeCard, openImage));
