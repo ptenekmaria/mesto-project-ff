@@ -5,7 +5,7 @@ const showInputError = (formElement, inputElement, errorMessage, inputErrorClass
     errorElement.classList.add(errorClass);
 };
   
-const hideInputError = (formElement, inputElement, inputErrorClass, errorClass) => {
+export const hideInputError = (formElement, inputElement, inputErrorClass, errorClass) => {
     const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
     inputElement.classList.remove(inputErrorClass);
     errorElement.classList.remove(errorClass);
@@ -13,11 +13,17 @@ const hideInputError = (formElement, inputElement, inputErrorClass, errorClass) 
 };
   
 const checkInputValidity = (formElement, inputElement, inputErrorClass, errorClass) => {
-    if (!inputElement.validity.valid) {
-      showInputError(formElement, inputElement, inputElement.validationMessage, inputErrorClass, errorClass);
-    } else {
-      hideInputError(formElement, inputElement, inputErrorClass, errorClass);
-    }
+  if (inputElement.validity.patternMismatch) {
+    inputElement.setCustomValidity(inputElement.dataset.patternErrorMessage);
+  } else {
+    inputElement.setCustomValidity("");
+  }
+
+  if (!inputElement.validity.valid) {
+    showInputError(formElement, inputElement, inputElement.validationMessage, inputErrorClass, errorClass);
+  } else {
+    hideInputError(formElement, inputElement, inputErrorClass, errorClass);
+  }
 };
 
 const hasInvalidInput = (inputList) => {
@@ -48,7 +54,7 @@ const setEventListeners = (formElement, inputSelector, inputErrorClass, errorCla
     });
 };
   
-const enableValidation = ({
+export const enableValidation = ({
     formSelector,
     inputSelector,
     submitButtonSelector,
@@ -64,5 +70,12 @@ const enableValidation = ({
   setEventListeners(formElement, inputSelector, inputErrorClass, errorClass, inactiveButtonClass, submitButtonSelector);
   });
 };
+
+export const clearValidation = (form, validationConfig) => {
+  const formInputs = Array.from(form.querySelectorAll('.popup__input'));
+  formInputs.forEach(formInput => {
+    hideInputError(form, formInput, validationConfig.inputErrorClass, validationConfig.errorClass);
+  });
   
-export { enableValidation };
+  form.querySelector('.popup__button').classList.add(validationConfig.inactiveButtonClass);
+};
