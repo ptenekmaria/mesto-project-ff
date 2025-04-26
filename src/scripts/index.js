@@ -69,11 +69,14 @@ const submitProfileEdit = (evt, profileName, profileDescription, profileEditName
     .then((userInfo) => {
         profileName.textContent = userInfo.name;
         profileDescription.textContent = userInfo.about;
-        closePopup(profileEditPopup, closePopupIfEscClicked);
-        clearPopupForm(profileEditPopup);
+        closePopup(profileEditPopup);
     })
     .catch((err) => {
         console.log(err);
+    })
+    .finally(() => {
+        const submitButton = evt.submitter;
+        submitButton.textContent = 'Сохранить';
     });
 }
 
@@ -84,10 +87,14 @@ const submitAvatarEdit = (evt, avatarLink) => {
     patchUserAvatar(avatarLink)
     .then((userInfo) => {
         fillingProfileInfo(profileName, profileDescription, profileImage, userInfo);
-        closePopup(avatarEditPopup, closePopupIfEscClicked);
+        closePopup(avatarEditPopup);
     })
     .catch((err) => {
         console.log(err);
+    })
+    .finally(() => {
+        const submitButton = evt.submitter;
+        submitButton.textContent = 'Сохранить';
     });
 }
 
@@ -106,10 +113,13 @@ const submitNewCard = (evt) => {
         const newCard = createCard(newCardItem, cardTemplate, deleteCard, likeCard, openImage, userId);
         placesList.prepend(newCard);
         closePopup(newCardPopup);
-        clearPopupForm(newCardPopup);
     })
     .catch((err) => {
         console.log(err);
+    })
+    .finally(() => {
+        const submitButton = evt.submitter;
+        submitButton.textContent = 'Сохранить';
     });
 }
 
@@ -137,20 +147,22 @@ profileEditButton.addEventListener('click', () => {
 
 //Сохранение изменений в профиле
 profileEditPopup.addEventListener('submit', (evt) => {
-    const submitButton = evt.target.querySelector('.popup__button');
+    const submitButton = evt.submitter;
     submitButton.textContent = 'Сохранение...';
     submitProfileEdit(evt, profileName, profileDescription, profileEditName, profileEditDescription);
 }); 
 
 //Открытие диалога обновления аватара
 profileImage.addEventListener('click', () => {
+    clearValidation(avatarEditPopup, validationConfig);
+    clearPopupForm(avatarEditPopup);
     openPopup(avatarEditPopup);
 });
 
 //Сохранение изменений аватара
 avatarEditPopup.addEventListener('submit', (evt) => {
     const avatarLink = evt.target.querySelector('.popup__input_type_url').value;
-    const submitButton = evt.target.querySelector('.popup__button');
+    const submitButton = evt.submitter;
     submitButton.textContent = 'Сохранение...';
     submitAvatarEdit(evt, avatarLink);
 })
@@ -158,12 +170,13 @@ avatarEditPopup.addEventListener('submit', (evt) => {
 //Открытие диалога добавления карточки
 newCardButton.addEventListener('click', () => { 
     clearValidation(newCardPopup, validationConfig);
+    clearPopupForm(newCardPopup);
     openPopup(newCardPopup);
 });
 
 //Добавление новой карточки
 newCardPopup.addEventListener('submit', (evt) => {
-    const submitButton = evt.target.querySelector('.popup__button');
+    const submitButton = evt.submitter;
     submitButton.textContent = 'Сохранение...';
     submitNewCard(evt);
 });

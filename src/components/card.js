@@ -35,10 +35,8 @@ const deleteCard = (evt) => {
     const cardToDelete = evt.target.closest('.card');
 
     deleteCardOnServer(cardToDelete.dataset.cardId)
-    .then((res) => {
-        if (res.ok) {
-            cardToDelete.remove();
-        }
+    .then(() => {
+        cardToDelete.remove();
     })
     .catch((err) => {
         console.log(err);

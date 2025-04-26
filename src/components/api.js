@@ -15,44 +15,47 @@ const handleResponse = (res) => {
     return Promise.reject(`Ошибка: ${res.status}`);
 }
 
+//Функция шаблонного запроса с обработкой ответа
+function request(endpoint, options) {
+    return fetch(`${config.baseUrl}${endpoint}`, options).then(handleResponse);
+  }
+
 //Запрос данных о пользователе
 export const getUserInfo = () => {
-    return fetch(`${config.baseUrl}/users/me`, {
-        method: "GET",
+    return request(
+        `/users/me`, 
+        { method: "GET",
         headers: {
           authorization: config.headers.authorization
         }
-      })
-        .then((handleResponse));
+    });
 }
 
 //Запрос списка карточек
 export const getInitialCards = () => {
-    return fetch(`${config.baseUrl}/cards`, {
+    return request(`/cards`, {
         method: "GET",
         headers: {
           authorization: config.headers.authorization
         }
-    })
-    .then(handleResponse);
+    });
 }
 
 //Запрос на обновление данных о пользователе
 export const patchUserInfo = (userInfo) => {
-    return fetch(`${config.baseUrl}/users/me`, {
+    return request(`/users/me`, {
         method: "PATCH",
         headers: {
           authorization: config.headers.authorization,
           'Content-Type': config.headers.jsonType
         },
         body: JSON.stringify(userInfo)
-      })
-        .then(handleResponse);
+    });
 }
 
 //Запрос на обновление аватара пользователя
 export const patchUserAvatar = (avatarLink) => {
-    return fetch(`${config.baseUrl}/users/me/avatar`, {
+    return request(`/users/me/avatar`, {
         method: "PATCH",
         headers: {
           authorization: config.headers.authorization,
@@ -61,26 +64,24 @@ export const patchUserAvatar = (avatarLink) => {
         body: JSON.stringify({
             "avatar": avatarLink
         })
-      })
-        .then(handleResponse);
+    });
 }
 
 //Запрос на добавление новой карточки
 export const postNewCard = (cardInfo) => {
-    return fetch(`${config.baseUrl}/cards`, {
+    return request(`/cards`, {
         method: "POST",
         headers: {
           authorization: config.headers.authorization,
           'Content-Type': config.headers.jsonType
         },
         body: JSON.stringify(cardInfo)
-    })
-    .then(handleResponse);
+    });
 }
 
 //Запрос на удаление карточки
 export const deleteCardOnServer = (cardId) => {
-    return fetch(`${config.baseUrl}/cards/${cardId}`, {
+    return request(`/cards/${cardId}`, {
         method: "DELETE",
         headers: {
           authorization: config.headers.authorization
@@ -90,22 +91,20 @@ export const deleteCardOnServer = (cardId) => {
 
 //Запрос на добавление лайка
 export const addLike = (cardId) => {
-    return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
+    return request(`/cards/likes/${cardId}`, {
         method: "PUT",
         headers: {
           authorization: config.headers.authorization
         }
-    })
-    .then(handleResponse);
+    });
 }
 
 //Запрос на снятие лайка
 export const deleteLike = (cardId) => {
-    return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
+    return request(`/cards/likes/${cardId}`, {
         method: "DELETE",
         headers: {
           authorization: config.headers.authorization
         }
-    })
-    .then(handleResponse);
+    });
 }

@@ -11,9 +11,6 @@ const closePopup = (popup) => {
     popup.classList.remove('popup_is-opened');
     popup.classList.remove('popup_is-animated'); 
 
-    const submitButton = popup.querySelector('.popup__button');
-    submitButton.textContent = 'Сохранить'
-
     document.removeEventListener('keydown', closePopupIfEscClicked);
 };
 
@@ -42,8 +39,6 @@ const closePopupIfEscClicked = (evt) => {
     const openedPopup = document.querySelector('.popup_is-opened');
 
     closePopup(openedPopup);
-
-    document.removeEventListener('keydown', closePopupIfEscClicked);
    }
 };
 
